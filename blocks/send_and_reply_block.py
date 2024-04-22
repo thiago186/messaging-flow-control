@@ -26,6 +26,9 @@ class SendReplyBlock(BaseMessageBlock):
     def run_block(self, event=None):
         """Send the message and update the status of the block"""
 
+        logging.debug(f"received event inside send_reply_block: {event}")
+        self.message.content = self.sending_content
+
         if isinstance(event, Message):
             self.message = event
 
@@ -38,6 +41,7 @@ class SendReplyBlock(BaseMessageBlock):
         # if self.status == BlockStatus.ready:
         channel = get_channel(self.messaging_channel)
         channel.send_message(self.message)
+
         self.outbound = self.message.content
         self.status = BlockStatus.running
 
@@ -54,9 +58,9 @@ class SendReplyBlock(BaseMessageBlock):
     def continue_block(self, event=None):
         """Continue to the next block"""
 
-        if isinstance(event, str):
+        if event is not None:
             #print(f"getting user response")
-            self.message.content = event
+            self.message.content = str(event)
 
         if self.status == BlockStatus.running:
             self.status = BlockStatus.success
