@@ -65,7 +65,9 @@ class BasicFlow(BaseModel):
 
         logging.debug(f"running flow with event: {event}")
         self.run_next_block = True
-        self.flow_status = BlockStatus.running
+
+        if self.flow_status == BlockStatus.success:
+            raise ValueError("Flow has already been run successfully. Cannot run again.")
 
         while self.run_next_block and (self.flow_status != BlockStatus.success and self.flow_status != BlockStatus.failed):
             logging.debug(f"########running/continuing block {self.curr_block_name}########")
@@ -141,7 +143,7 @@ class BasicFlow(BaseModel):
 
 if __name__ == "__main__":
     
-    logging.basicConfig(level=logging.DEBUG)
+    # logging.basicConfig(level=logging.DEBUG)
     from schemas import Message
     flow = BasicFlow(
         flow_file="support_example_flow.json",
