@@ -1,0 +1,13 @@
+
+.DS_Store
+
+venv/
+
+*.pyc
+*.pyo
+__pycache__/
+
+*.log
+
+lib/
+lib64/

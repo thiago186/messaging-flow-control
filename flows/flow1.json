@@ -1,0 +1,64 @@
+{
+    "primeiro_bloco": {
+        "block_type": "single_message",
+        "sending_content": "Teste de primeira msg",
+        "next_block_name": "segundo_bloco"
+    },
+    "segundo_bloco": {
+        "block_type": "single_message",
+        "sending_content": "Teste de segunda msg",
+        "next_block_name": "set_variables"
+    },
+    "set_variables": {
+        "block_type": "set_variables",
+        "next_block_name": "chave_um",
+        "variables": {
+            "x": 1,
+            "other_variable": "{{segundo_bloco.outbound}}"
+        }
+    },
+    "chave_um": {
+        "block_type": "split_variable",
+        "variable": "x",
+        "branches": {
+            "1": "terceiro_bloco",
+            "2": "test_request",
+            "default": "test_request",
+            "on_error": "test_request"
+        }
+    },
+    "terceiro_bloco": {
+        "block_type": "send_and_reply",
+        "sending_content": "Oi! como vai você?",
+        "next_block_name": "guardar_resposta",
+        "is_final_block": false
+    },
+    "guardar_resposta": {
+        "block_type": "set_variables",
+        "next_block_name": "nenhum",
+        "is_final_block": true,
+        "variables": {
+            "resposta_usuario": "{{terceiro_bloco.inbound}}"
+        }
+    },
+    "test_request": {
+        "block_type": "http_request",
+        "next_block_name": "quarto_bloco",
+        "is_final_block": false,
+        "options": {
+            "method": "GET",
+            "url": "https://jsonplaceholder.typicode.com/posts/{x}",
+            "headers": {
+                "Content-Type": "application/json"
+            }
+        }
+    },
+    "quarto_bloco": {
+        "block_type": "set_variables",
+        "next_block_name": "nenhum",
+        "is_final_block": true,
+        "variables": {
+            "userId": "{{test_request.outbound.userId}}"
+        }
+    }
+}
