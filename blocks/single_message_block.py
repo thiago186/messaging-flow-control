@@ -21,25 +21,17 @@ class SingleMessageBlock(BaseMessageBlock):
     def run_block(self, event=None):
         """Send the message and update the status of the block"""
 
-        #print('received event:', event)
-        if event is None:
-            #print('event is none. setting message to sending_content')
+        if self.messaging_channel is None:
+            raise MissingFieldException("messaging_channel")
+
+        if self.status == BlockStatus.ready:
+
             self.message = Message(
                 to=self.to,
                 from_=self.from_,
                 content=self.sending_content,
             )
 
-        if isinstance(event, Message):
-            self.message = event
-
-        if self.message is None:
-            raise MissingFieldException("message")
-
-        if self.messaging_channel is None:
-            raise MissingFieldException("messaging_channel")
-
-        if self.status == BlockStatus.ready:
             channel = get_channel(self.messaging_channel)
             channel.send_message(self.message)
             self.outbound = self.message.content

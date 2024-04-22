@@ -1,0 +1,41 @@
+{
+    "first_block":  {
+      "block_type": "send_and_reply",
+      "sending_content": "Hi! How can I help you? Type 1 for support or 2 for sales.",
+      "next_block_name": "set_variable"
+    },
+    "set_variable": {
+      "block_type": "set_variables",
+      "next_block_name": "split_on_answer",
+      "variables": {
+          "user_answer": "{{first_block.inbound}}"
+      }
+    },
+    "split_on_answer": {
+      "block_type": "split_variable",
+      "variable": "user_answer",
+      "branches":{
+          "1": "support_msg",
+          "2": "sales_msg",
+          "default": "other_block",
+          "on_error": "other_block"
+      }
+    },
+    "support_msg": {
+        "block_type": "single_message",
+        "sending_content": "You selected support. Please wait a moment.",
+        "next_block_name": "end_flow",
+        "is_final_block": true
+    },
+    "sales_msg": {
+        "block_type": "single_message",
+        "sending_content": "You selected sales. Please wait a moment.",
+        "next_block_name": "end_flow",
+        "is_final_block": true
+    },
+    "other_block": {
+        "block_type": "single_message",
+        "sending_content": "I'm sorry, I didn't understand your answer. Please try again.",
+        "next_block_name": "first_block"
+    }
+  }
