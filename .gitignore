@@ -2,7 +2,7 @@
 .DS_Store
 
 venv/
-
+.env
 *.pyc
 *.pyo
 __pycache__/

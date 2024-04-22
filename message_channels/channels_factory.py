@@ -11,6 +11,10 @@ def get_channel(channel: MessageChannels) -> BaseModel:
         from message_channels.mock_channel import MockChannel
         return MockChannel()
     
+    if channel == MessageChannels.twilio:
+        from message_channels.twilio_channel import TwilioChannel
+        return TwilioChannel()
+
     raise ValueError(f'Channel {channel} is not supported')
     
 

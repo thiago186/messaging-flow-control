@@ -31,7 +31,7 @@ class BlockTypes(str, Enum):
 class MessageChannels(str, Enum):
     """The channels where a message can be sent"""
 
-    whatsapp = 'whatsapp'
+    twilio = "twilio"
     mock = 'mock'
 
 

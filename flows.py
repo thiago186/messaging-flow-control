@@ -145,12 +145,14 @@ if __name__ == "__main__":
     
     # logging.basicConfig(level=logging.DEBUG)
     from schemas import Message
+    from settings import settings
+
     flow = BasicFlow(
         flow_file="support_example_flow.json",
         flow_name="flow1",
-        curr_channel=MessageChannels.mock,
-        from_="whatsapp:me",
-        to="whatsapp:you"
+        curr_channel=MessageChannels.twilio,
+        from_=settings.twilio_phone,
+        to="whatsapp:+558182860171"
     )
     flow.run_flow() # triggering flow
     # flow.run_flow("tudo bem, e você?")
