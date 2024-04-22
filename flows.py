@@ -84,7 +84,7 @@ class BasicFlow(BaseModel):
 
             # if self.previous_block_name is not None:
             #     block.previous_block = self.get_block_by_name(self.previous_block_name)
-            if block.status == BlockStatus.ready:
+            if block.status != BlockStatus.running:
                 logging.debug(f"block {block.name_in_flow} is ready. running block")
                 keys_to_change = block.run_block(event)
             elif block.status == BlockStatus.running:
@@ -112,7 +112,7 @@ class BasicFlow(BaseModel):
             #     break
             condition = self.run_next_block and (self.flow_status != BlockStatus.success and self.flow_status != BlockStatus.failed)
             logging.debug(f"condition: {condition}")
-            logging.debug(f"ending block run. flow: {self}")
+            # logging.debug(f"ending block run. flow: {self}")
 
     def get_block_by_name(self, name):
         for block in self.blocks:

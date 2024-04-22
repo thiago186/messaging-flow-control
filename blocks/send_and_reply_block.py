@@ -35,21 +35,21 @@ class SendReplyBlock(BaseMessageBlock):
         if self.messaging_channel is None:
             raise MissingFieldException("messaging_channel")
 
-        if self.status == BlockStatus.ready:
-            channel = get_channel(self.messaging_channel)
-            channel.send_message(self.message)
-            self.outbound = self.message.content
-            self.status = BlockStatus.running
+        # if self.status == BlockStatus.ready:
+        channel = get_channel(self.messaging_channel)
+        channel.send_message(self.message)
+        self.outbound = self.message.content
+        self.status = BlockStatus.running
 
-            return {
-                "next_block_name": self.name_in_flow,
-                "run_next_block": False,
-            }
+        return {
+            "next_block_name": self.name_in_flow,
+            "run_next_block": False,
+        }
 
-        else:
-            logging.info(
-                "This block has already started or been executed. Not running again."
-            )
+        # else:
+        #     logging.info(
+        #         "This block has already started or been executed. Not running again."
+        #     )
 
     def continue_block(self, event=None):
         """Continue to the next block"""

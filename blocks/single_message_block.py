@@ -24,27 +24,27 @@ class SingleMessageBlock(BaseMessageBlock):
         if self.messaging_channel is None:
             raise MissingFieldException("messaging_channel")
 
-        if self.status == BlockStatus.ready:
+        # if self.status == BlockStatus.ready:
 
-            self.message = Message(
-                to=self.to,
-                from_=self.from_,
-                content=self.sending_content,
-            )
+        self.message = Message(
+            to=self.to,
+            from_=self.from_,
+            content=self.sending_content,
+        )
 
-            channel = get_channel(self.messaging_channel)
-            channel.send_message(self.message)
-            self.outbound = self.message.content
-            self.status = BlockStatus.success
-            self.run_next_block = True
+        channel = get_channel(self.messaging_channel)
+        channel.send_message(self.message)
+        self.outbound = self.message.content
+        self.status = BlockStatus.success
+        self.run_next_block = True
 
-            return {
-                "next_block_name": self.next_block_name,
-                "run_next_block": self.run_next_block,
-            }
+        return {
+            "next_block_name": self.next_block_name,
+            "run_next_block": self.run_next_block,
+        }
 
-        else:
-            logging.info("This block has already been executed. Not running again.")
+        # else:
+        #     logging.info("This block has already been executed. Not running again.")
 
     def continue_block(self, event=None):
         """Continue to the next block"""
